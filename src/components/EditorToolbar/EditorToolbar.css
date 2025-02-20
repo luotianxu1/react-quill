@@ -1,0 +1,90 @@
+#toolbar {
+    border-bottom: 1px solid #ccc;
+    padding: 8px;
+    background: #f8f9fa;
+}
+
+.ql-formats {
+    display: inline-block;
+    margin-right: 15px;
+    padding-right: 15px;
+    border-right: 1px solid #e2e8f0;
+}
+
+.ql-formats:last-child {
+    border-right: none;
+}
+
+.ql-formats button {
+    width: 28px;
+    height: 28px;
+    padding: 3px;
+    margin: 0 2px;
+    cursor: pointer;
+}
+
+.ql-formats select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.ql-formats select:focus {
+    outline: none;
+    border-color: #4299e1;
+}
+
+.ql-formats select option {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.ql-formats select option:disabled {
+    color: #a0aec0;
+    font-style: italic;
+}
+
+/* 自定义下拉框样式 */
+.ql-customStyle {
+    min-width: 120px;
+}
+
+/* 下拉框选项文字 */
+.ql-customStyle .ql-picker-item[data-label='无']:before {
+    content: '无';
+}
+
+.ql-customStyle .ql-picker-item[data-label='高亮文本']:before {
+    content: '高亮文本';
+}
+
+.ql-customStyle .ql-picker-item[data-label='引用文本']:before {
+    content: '引用文本';
+}
+
+.ql-customStyle .ql-picker-item[data-label='注释文本']:before {
+    content: '注释文本';
+}
+
+/* 当前选中项的文字 */
+.ql-customStyle .ql-picker-label[data-label='无']:before {
+    content: '无';
+}
+
+.ql-customStyle .ql-picker-label[data-label='高亮文本']:before {
+    content: '高亮文本';
+}
+
+.ql-customStyle .ql-picker-label[data-label='引用文本']:before {
+    content: '引用文本';
+}
+
+.ql-customStyle .ql-picker-label[data-label='注释文本']:before {
+    content: '注释文本';
+}

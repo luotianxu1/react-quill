@@ -1,0 +1,133 @@
+.editor-wrapper {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* 编辑器容器 */
+.ql-container {
+    min-height: 400px;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, sans-serif;
+    border: none;
+}
+
+/* 编辑区域 */
+.ql-editor {
+    padding: 20px;
+    line-height: 1.8;
+}
+
+.ql-editor p {
+    margin-bottom: 1em;
+}
+
+/* 标题样式 */
+.ql-editor h1 {
+    font-size: 2em;
+    margin: 1em 0 0.5em;
+}
+
+.ql-editor h2 {
+    font-size: 1.5em;
+    margin: 1em 0 0.5em;
+}
+
+.ql-editor h3 {
+    font-size: 1.17em;
+    margin: 1em 0 0.5em;
+}
+
+/* 列表样式 */
+.ql-editor ul,
+.ql-editor ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 引用样式 */
+.ql-editor blockquote {
+    border-left: 4px solid #e2e8f0;
+    margin: 1.5em 0;
+    padding-left: 1em;
+    color: #4a5568;
+}
+
+/* 代码块样式 */
+.ql-editor pre {
+    background: #f7fafc;
+    border-radius: 4px;
+    padding: 1em;
+    margin: 1em 0;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+/* 图片样式 */
+.ql-editor img {
+    max-width: 100%;
+    margin: 1em 0;
+    border-radius: 4px;
+}
+
+/* 链接样式 */
+.ql-editor a {
+    color: #4299e1;
+    text-decoration: none;
+}
+
+.ql-editor a:hover {
+    text-decoration: underline;
+}
+
+/* 占位符样式 */
+.ql-editor.ql-blank::before {
+    color: #a0aec0;
+    font-style: normal;
+}
+
+/* 选中文本的样式 */
+.ql-editor ::selection {
+    background: #bee3f8;
+}
+
+/* 自定义下拉框样式 */
+.ql-customStyle {
+    min-width: 120px !important;
+}
+
+.ql-customStyle option {
+    padding: 8px !important;
+}
+
+.ql-customStyle option::before {
+    content: attr(data-value);
+}
+
+/* 自定义样式 */
+.ql-editor p[label='highlight'] {
+    background-color: #fff3cd;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.ql-editor p[label='quote'] {
+    color: #718096;
+    font-style: italic;
+    border-left: 3px solid #e2e8f0;
+    padding: 10px 15px;
+    margin: 10px 0;
+    background-color: #f8f9fa;
+}
+
+.ql-editor p[label='note'] {
+    color: #2b6cb0;
+    background-color: #ebf8ff;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    border: 1px solid #bee3f8;
+}
