@@ -6,6 +6,7 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.bubble.css'
 import './Editor.css'
 import '../../utils/customBlots'
+import '../../utils/customTagBlot'
 
 class Editor extends Component {
     constructor(props) {
@@ -25,16 +26,19 @@ class Editor extends Component {
                     toolbar: {
                         container: '#toolbar',
                         handlers: {
+                            customTag: () => {
+                                const range = this.quill.getSelection()
+                                if (range && range.length > 0) {
+                                    this.quill.format('customTag', true)
+                                }
+                            },
                             clean: () => {
                                 const range = this.quill.getSelection()
                                 if (range) {
-                                    // 清除所有格式，包括自定义样式
                                     this.quill.removeFormat(
                                         range.index,
                                         range.length
                                     )
-                                    // 特别清除 customStyle
-                                    this.quill.format('customStyle', false)
                                 }
                             },
                         },

@@ -32,6 +32,11 @@ const EditorToolbar = () => {
                 </select>
             </span>
 
+            {/* 自定义标签按钮 */}
+            <span className='ql-formats'>
+                <button className='ql-customTag' value='tag'>标签</button>
+            </span>
+
             {/* 标题 */}
             <span className='ql-formats'>
                 <select className='ql-header' defaultValue=''>
