@@ -8,6 +8,17 @@ const CUSTOM_STYLES = [
     { value: 'note', label: '注释文本' },
 ]
 
+const FONT_SIZES = [
+    { value: '12px', label: '12px' },
+    { value: '14px', label: '14px' },
+    { value: '16px', label: '16px' },
+    { value: '18px', label: '18px' },
+    { value: '20px', label: '20px' },
+    { value: '24px', label: '24px' },
+    { value: '30px', label: '30px' },
+    { value: '36px', label: '36px' },
+]
+
 const EditorToolbar = () => {
     const renderOption = (item) => (
         <option key={item.value} value={item.value} data-value={item.label}>
@@ -49,11 +60,12 @@ const EditorToolbar = () => {
 
             {/* 字体大小 */}
             <span className='ql-formats'>
-                <select className='ql-size' defaultValue=''>
-                    <option value='small'>小</option>
-                    <option value=''>正常</option>
-                    <option value='large'>大</option>
-                    <option value='huge'>超大</option>
+                <select className='ql-size' defaultValue='16px'>
+                    {FONT_SIZES.map((size) => (
+                        <option key={size.value} value={size.value}>
+                            {size.label}
+                        </option>
+                    ))}
                 </select>
             </span>
 
