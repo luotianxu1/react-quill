@@ -38,10 +38,28 @@ class Editor extends Component {
                             clean: () => {
                                 const range = this.quill.getSelection()
                                 if (range) {
-                                    this.quill.removeFormat(
+                                    // 获取当前内容的 Delta
+                                    const delta = this.quill.getContents(
                                         range.index,
                                         range.length
                                     )
+
+                                    // 遍历 Delta 操作
+                                    delta.ops.forEach((op) => {
+                                        if (
+                                            op.insert &&
+                                            typeof op.insert === 'object' &&
+                                            op.insert.image
+                                        ) {
+                                            // 保留图片
+                                            return
+                                        }
+                                        // 清除其他格式
+                                        this.quill.removeFormat(
+                                            range.index,
+                                            range.length
+                                        )
+                                    })
                                 }
                             },
                         },
