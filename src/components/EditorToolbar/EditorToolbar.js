@@ -19,6 +19,16 @@ const FONT_SIZES = [
     { value: '36px', label: '36px' },
 ]
 
+const LINE_HEIGHTS = [
+    { value: '1', label: '1' },
+    { value: '1.2', label: '1.2' },
+    { value: '1.5', label: '1.5' },
+    { value: '1.75', label: '1.75' },
+    { value: '2', label: '2' },
+    { value: '2.5', label: '2.5' },
+    { value: '3', label: '3' },
+]
+
 const EditorToolbar = () => {
     const renderOption = (item) => (
         <option key={item.value} value={item.value} data-value={item.label}>
@@ -45,7 +55,9 @@ const EditorToolbar = () => {
 
             {/* 自定义标签按钮 */}
             <span className='ql-formats'>
-                <button className='ql-customTag' value='tag'>标签</button>
+                <button className='ql-customTag' value='tag'>
+                    标签
+                </button>
             </span>
 
             {/* 标题 */}
@@ -112,6 +124,17 @@ const EditorToolbar = () => {
             {/* 清除格式 */}
             <span className='ql-formats'>
                 <button className='ql-clean'></button>
+            </span>
+
+            {/* 行高 */}
+            <span className='ql-formats'>
+                <select className='ql-lineHeight' defaultValue='1.5'>
+                    {LINE_HEIGHTS.map((height) => (
+                        <option key={height.value} value={height.value}>
+                            {height.label}
+                        </option>
+                    ))}
+                </select>
             </span>
         </div>
     )

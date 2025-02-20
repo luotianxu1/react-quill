@@ -7,6 +7,8 @@ import 'quill/dist/quill.bubble.css'
 import './Editor.css'
 import '../../utils/customBlots'
 import '../../utils/customTagBlot'
+import '../../utils/lineHeightBlot'
+import '../../utils/sizeBlot'
 
 class Editor extends Component {
     constructor(props) {
@@ -20,20 +22,6 @@ class Editor extends Component {
 
     componentDidMount() {
         if (this.editorRef.current) {
-            // 配置字号选项
-            const Size = Quill.import('attributors/style/size')
-            Size.whitelist = [
-                '12px',
-                '14px',
-                '16px',
-                '18px',
-                '20px',
-                '24px',
-                '30px',
-                '36px',
-            ]
-            Quill.register(Size, true)
-
             this.quill = new Quill(this.editorRef.current, {
                 theme: 'snow',
                 modules: {

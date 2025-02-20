@@ -88,3 +88,77 @@
 .ql-customStyle .ql-picker-label[data-label='注释文本']:before {
     content: '注释文本';
 }
+
+/* 行高下拉框样式 */
+.ql-lineHeight {
+    min-width: 80px !important;
+}
+
+.ql-lineHeight .ql-picker-label {
+    padding-right: 20px !important;
+}
+
+.ql-lineHeight .ql-picker-label::before {
+    content: '行高';
+}
+
+.ql-lineHeight .ql-picker-options {
+    min-width: 80px !important;
+}
+
+.ql-lineHeight .ql-picker-label[data-value='1']::before {
+    content: '1';
+}
+
+.ql-lineHeight .ql-picker-label[data-value='1.2']::before {
+    content: '1.2';
+}
+
+.ql-lineHeight .ql-picker-label[data-value='1.5']::before {
+    content: '1.5';
+}
+
+.ql-lineHeight .ql-picker-label[data-value='1.75']::before {
+    content: '1.75';
+}
+
+.ql-lineHeight .ql-picker-label[data-value='2']::before {
+    content: '2';
+}
+
+.ql-lineHeight .ql-picker-label[data-value='2.5']::before {
+    content: '2.5';
+}
+
+.ql-lineHeight .ql-picker-label[data-value='3']::before {
+    content: '3';
+}
+
+/* 下拉选项样式 */
+.ql-lineHeight .ql-picker-item[data-value='1']::before {
+    content: '1';
+}
+
+.ql-lineHeight .ql-picker-item[data-value='1.2']::before {
+    content: '1.2';
+}
+
+.ql-lineHeight .ql-picker-item[data-value='1.5']::before {
+    content: '1.5';
+}
+
+.ql-lineHeight .ql-picker-item[data-value='1.75']::before {
+    content: '1.75';
+}
+
+.ql-lineHeight .ql-picker-item[data-value='2']::before {
+    content: '2';
+}
+
+.ql-lineHeight .ql-picker-item[data-value='2.5']::before {
+    content: '2.5';
+}
+
+.ql-lineHeight .ql-picker-item[data-value='3']::before {
+    content: '3';
+}
