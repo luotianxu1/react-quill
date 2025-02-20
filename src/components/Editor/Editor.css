@@ -66,10 +66,23 @@
 }
 
 /* 图片样式 */
-.ql-editor img {
+.editor-image {
     max-width: 100%;
-    margin: 1em 0;
+    margin: 10px 0;
     border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 图片选中效果 */
+.editor-image.selected {
+    box-shadow: 0 0 0 2px #4299e1;
+    border-radius: 4px;
+}
+
+/* 图片悬停效果 */
+.editor-image:hover {
+    box-shadow: 0 0 0 2px #63b3ed;
 }
 
 /* 链接样式 */

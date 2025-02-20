@@ -9,6 +9,7 @@ import '../../utils/customBlots'
 import '../../utils/customTagBlot'
 import '../../utils/lineHeightBlot'
 import '../../utils/sizeBlot'
+import '../../utils/imageBlot'
 
 class Editor extends Component {
     constructor(props) {
@@ -49,6 +50,18 @@ class Editor extends Component {
                 placeholder: '请输入内容...',
             })
 
+            // 监听编辑器点击事件
+            this.quill.root.addEventListener('click', (e) => {
+                // 如果点击的不是图片，取消所有图片的选中状态
+                if (!e.target.classList.contains('editor-image')) {
+                    document
+                        .querySelectorAll('.editor-image')
+                        .forEach((img) => {
+                            img.classList.remove('selected')
+                        })
+                }
+            })
+
             this.quill.on('text-change', () => {
                 const content = this.quill.root.innerHTML
                 this.setState({ content })
@@ -62,6 +75,8 @@ class Editor extends Component {
     componentWillUnmount() {
         if (this.quill) {
             this.quill.off('text-change')
+            // 移除点击事件监听器
+            this.quill.root.removeEventListener('click')
         }
     }
 
