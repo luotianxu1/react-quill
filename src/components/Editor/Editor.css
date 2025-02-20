@@ -65,24 +65,57 @@
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
+/* 图片包装容器 */
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 10px 0;
+}
+
 /* 图片样式 */
 .editor-image {
     max-width: 100%;
-    margin: 10px 0;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: move;
     transition: all 0.3s ease;
 }
 
 /* 图片选中效果 */
 .editor-image.selected {
     box-shadow: 0 0 0 2px #4299e1;
-    border-radius: 4px;
 }
 
 /* 图片悬停效果 */
 .editor-image:hover {
     box-shadow: 0 0 0 2px #63b3ed;
+}
+
+/* 调整大小的手柄 */
+.image-resizer {
+    position: absolute;
+    right: -6px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background-color: #4299e1;
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: se-resize;
+    display: none;
+}
+
+/* 选中时显示调整手柄 */
+.editor-image.selected + .image-resizer {
+    display: block;
+}
+
+/* 拖拽时的样式 */
+.image-wrapper.resizing {
+    user-select: none;
+}
+
+.image-wrapper.resizing .editor-image {
+    opacity: 0.7;
 }
 
 /* 链接样式 */
