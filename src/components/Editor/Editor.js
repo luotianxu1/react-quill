@@ -26,44 +26,68 @@ class Editor extends Component {
             const quill = new Quill(this.editorRef.current, {
                 theme: 'snow',
                 modules: {
-                    toolbar: '#toolbar',
-                    handlers: {
-                        customTag: () => {
-                            const range = quill.getSelection()
-                            if (range && range.length > 0) {
-                                quill.format('customTag', true)
-                            }
-                        },
-                        clean: () => {
-                            const range = quill.getSelection()
-                            if (range) {
-                                const delta = quill.getContents(
-                                    range.index,
-                                    range.length
-                                )
+                    toolbar: {
+                        container: '#toolbar',
+                        handlers: {
+                            customTag: () => {
+                                const range = quill.getSelection()
+                                if (range && range.length > 0) {
+                                    quill.format('customTag', true)
+                                }
+                            },
+                            clean: () => {
+                                const range = quill.getSelection()
+                                if (range) {
+                                    console.log(range)
 
-                                delta.ops.forEach((op) => {
-                                    if (op.insert && typeof op.insert === 'object' && op.insert.image) {
-                                        return
-                                    }
-                                    quill.removeFormat(
+                                    // 获取当前内容
+                                    const contents = quill.getContents(
                                         range.index,
                                         range.length
                                     )
-                                })
-                            }
+
+                                    // 创建新的 Delta，保留图片
+                                    const cleanDelta = []
+                                    contents.ops.forEach((op) => {
+                                        if (
+                                            op.insert &&
+                                            typeof op.insert === 'object' &&
+                                            op.insert.image
+                                        ) {
+                                            // 保留图片及其所有属性
+                                            cleanDelta.push(op)
+                                        } else {
+                                            // 清除文本格式
+                                            cleanDelta.push({
+                                                insert: op.insert,
+                                            })
+                                        }
+                                    })
+
+                                    // 使用 updateContents 替换内容
+                                    quill.updateContents(
+                                        [
+                                            { delete: range.length },
+                                            ...cleanDelta,
+                                        ],
+                                        'user'
+                                    )
+                                }
+                            },
                         },
                     },
                 },
                 placeholder: '请输入内容...',
             })
-            
+
             this.setState({ quill }, () => {
                 quill.root.addEventListener('click', (e) => {
                     if (!e.target.classList.contains('editor-image')) {
-                        document.querySelectorAll('.editor-image').forEach((img) => {
-                            img.classList.remove('selected')
-                        })
+                        document
+                            .querySelectorAll('.editor-image')
+                            .forEach((img) => {
+                                img.classList.remove('selected')
+                            })
                     }
                 })
 
