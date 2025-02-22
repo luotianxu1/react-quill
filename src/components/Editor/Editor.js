@@ -16,76 +16,64 @@ class Editor extends Component {
         super(props)
         this.state = {
             content: '',
+            quill: null,
         }
         this.editorRef = React.createRef()
-        this.quill = null
     }
 
     componentDidMount() {
         if (this.editorRef.current) {
-            this.quill = new Quill(this.editorRef.current, {
+            const quill = new Quill(this.editorRef.current, {
                 theme: 'snow',
                 modules: {
-                    toolbar: {
-                        container: '#toolbar',
-                        handlers: {
-                            customTag: () => {
-                                const range = this.quill.getSelection()
-                                if (range && range.length > 0) {
-                                    this.quill.format('customTag', true)
-                                }
-                            },
-                            clean: () => {
-                                const range = this.quill.getSelection()
-                                if (range) {
-                                    // 获取当前内容的 Delta
-                                    const delta = this.quill.getContents(
+                    toolbar: '#toolbar',
+                    handlers: {
+                        customTag: () => {
+                            const range = quill.getSelection()
+                            if (range && range.length > 0) {
+                                quill.format('customTag', true)
+                            }
+                        },
+                        clean: () => {
+                            const range = quill.getSelection()
+                            if (range) {
+                                const delta = quill.getContents(
+                                    range.index,
+                                    range.length
+                                )
+
+                                delta.ops.forEach((op) => {
+                                    if (op.insert && typeof op.insert === 'object' && op.insert.image) {
+                                        return
+                                    }
+                                    quill.removeFormat(
                                         range.index,
                                         range.length
                                     )
-
-                                    // 遍历 Delta 操作
-                                    delta.ops.forEach((op) => {
-                                        if (
-                                            op.insert &&
-                                            typeof op.insert === 'object' &&
-                                            op.insert.image
-                                        ) {
-                                            // 保留图片
-                                            return
-                                        }
-                                        // 清除其他格式
-                                        this.quill.removeFormat(
-                                            range.index,
-                                            range.length
-                                        )
-                                    })
-                                }
-                            },
+                                })
+                            }
                         },
                     },
                 },
                 placeholder: '请输入内容...',
             })
-
-            // 监听编辑器点击事件
-            this.quill.root.addEventListener('click', (e) => {
-                // 如果点击的不是图片，取消所有图片的选中状态
-                if (!e.target.classList.contains('editor-image')) {
-                    document
-                        .querySelectorAll('.editor-image')
-                        .forEach((img) => {
+            
+            this.setState({ quill }, () => {
+                quill.root.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('editor-image')) {
+                        document.querySelectorAll('.editor-image').forEach((img) => {
                             img.classList.remove('selected')
                         })
-                }
-            })
+                    }
+                })
 
-            this.quill.on('text-change', () => {
-                const content = this.quill.root.innerHTML
-                this.setState({ content })
-                if (this.props.onChange) {
-                    this.props.onChange(content)
-                }
+                quill.on('text-change', () => {
+                    const content = quill.root.innerHTML
+                    this.setState({ content })
+                    if (this.props.onChange) {
+                        this.props.onChange(content)
+                    }
+                })
             })
         }
     }
@@ -101,7 +89,7 @@ class Editor extends Component {
     render() {
         return (
             <div className='editor-wrapper'>
-                <EditorToolbar />
+                <EditorToolbar quill={this.state.quill} />
                 <div ref={this.editorRef}></div>
             </div>
         )

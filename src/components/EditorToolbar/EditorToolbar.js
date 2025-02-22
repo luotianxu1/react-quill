@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './EditorToolbar.css'
 
-const CUSTOM_STYLES = [
+export const CUSTOM_STYLES = [
     { value: '', label: '无' },
     { value: 'highlight', label: '高亮文本' },
     { value: 'quote', label: '引用文本' },
@@ -33,20 +33,72 @@ class EditorToolbar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            // 将原来的 useState 转换为 state
+            showCustomStyleDropdown: false,
+            currentStyle: CUSTOM_STYLES[0],
         }
     }
 
-    // 将原来的函数转换为类方法
-    // 例如：handleSomeAction = () => { ... }
+    componentDidMount() {
+        document.addEventListener('click', this.handleClickOutside)
+
+        // 使用 props 中的 quill
+        if (this.props.quill) {
+            this.props.quill.on('selection-change', (range) => {
+                if (range) {
+                    const format = this.props.quill.getFormat(range)
+                    // 更新当前选中的样式
+                    const currentStyle =
+                        CUSTOM_STYLES.find(
+                            (style) => style.value === format.customStyle
+                        ) || CUSTOM_STYLES[0]
+                    this.setState({ currentStyle })
+                }
+            })
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleClickOutside)
+    }
+
+    handleClickOutside = (event) => {
+        const dropdown = document.querySelector('.custom-style-dropdown')
+        if (dropdown && !dropdown.contains(event.target)) {
+            this.setState({ showCustomStyleDropdown: false })
+        }
+    }
+
+    toggleCustomStyleDropdown = () => {
+        this.setState((prevState) => ({
+            showCustomStyleDropdown: !prevState.showCustomStyleDropdown,
+        }))
+    }
+
+    handleCustomStyleSelect = (value, label) => {
+        this.setState({
+            currentStyle: { value, label },
+            showCustomStyleDropdown: false,
+        })
+
+        // 使用 props 中的 quill
+        const { quill } = this.props
+
+        if (quill) {
+            const range = quill.getSelection(true)
+
+            if (range) {
+                if (value === '') {
+                    quill.format('customStyle', false)
+                } else {
+                    console.log(label)
+
+                    quill.format('customStyle', value)
+                }
+            }
+        }
+    }
 
     render() {
-        const renderOption = (item) => (
-            <option key={item.value} value={item.value} data-value={item.label}>
-                {item.label}
-            </option>
-        )
-
         return (
             <div id='toolbar'>
                 {/* 基本格式 */}
@@ -57,11 +109,38 @@ class EditorToolbar extends Component {
                     <button className='ql-strike'></button>
                 </span>
 
-                {/* 自定义样式 */}
-                <span className='ql-formats'>
-                    <select className='ql-customStyle' defaultValue=''>
-                        {CUSTOM_STYLES.map(renderOption)}
-                    </select>
+                {/* 自定义样式 - 改为按钮和下拉框 */}
+                <span className='ql-formats custom-style-dropdown'>
+                    <button
+                        type='button'
+                        className='ql-customStyle custom-style-button'
+                        onClick={this.toggleCustomStyleDropdown}
+                    >
+                        {this.state.currentStyle.label}
+                    </button>
+                    {this.state.showCustomStyleDropdown && (
+                        <div className='custom-style-menu'>
+                            {CUSTOM_STYLES.map((style) => (
+                                <div
+                                    key={style.value}
+                                    className={`custom-style-item ${
+                                        this.state.currentStyle.value ===
+                                        style.value
+                                            ? 'active'
+                                            : ''
+                                    }`}
+                                    onClick={() =>
+                                        this.handleCustomStyleSelect(
+                                            style.value,
+                                            style.label
+                                        )
+                                    }
+                                >
+                                    {style.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </span>
 
                 {/* 自定义标签按钮 */}
