@@ -1,37 +1,34 @@
 import Quill from 'quill'
 
-const Block = Quill.import('blots/block')
+const Parchment = Quill.import('parchment')
 
-class LineHeightBlot extends Block {
-    static create(value) {
-        const node = super.create()
+// 创建一个行高样式属性
+class LineHeightAttributor extends Parchment.StyleAttributor {
+    constructor() {
+        super('lineHeight', 'line-height', {
+            scope: Parchment.Scope.BLOCK,
+        })
+    }
+
+    add(node, value) {
         node.style.lineHeight = value
-        return node
+        return true
     }
 
-    static formats(node) {
-        return node.style.lineHeight || undefined
+    remove(node) {
+        node.style.lineHeight = ''
     }
 
-    format(name, value) {
-        if (name === 'lineHeight') {
-            if (value) {
-                this.domNode.style.lineHeight = value
-            } else {
-                this.domNode.style.lineHeight = ''
-            }
-        } else {
-            super.format(name, value)
-        }
+    value(node) {
+        return node.style.lineHeight || ''
     }
 }
 
-LineHeightBlot.blotName = 'lineHeight'
-LineHeightBlot.tagName = 'p'
+const lineHeight = new LineHeightAttributor()
 
 // 注册行高格式
 Quill.register({
-    'formats/lineHeight': LineHeightBlot,
+    'formats/lineHeight': lineHeight,
 })
 
-export default LineHeightBlot
+export default lineHeight
