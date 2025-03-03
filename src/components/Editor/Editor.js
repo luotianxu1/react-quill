@@ -10,6 +10,7 @@ import '../../utils/customTagBlot'
 import '../../utils/lineHeightBlot'
 import '../../utils/sizeBlot'
 import '../../utils/imageBlot'
+import '../../utils/dividerBlot'
 
 class Editor extends Component {
     constructor(props) {
@@ -72,6 +73,20 @@ class Editor extends Component {
                                         ],
                                         'user'
                                     )
+                                }
+                            },
+                            divider: () => {
+                                const range = quill.getSelection(true)
+                                if (range) {
+                                    // 在当前位置插入分割线
+                                    quill.insertEmbed(
+                                        range.index,
+                                        'divider',
+                                        true,
+                                        'user'
+                                    )
+                                    // 移动光标到分割线后面
+                                    quill.setSelection(range.index + 1, 0)
                                 }
                             },
                         },

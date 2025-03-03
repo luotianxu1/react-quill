@@ -205,6 +205,13 @@ class EditorToolbar extends Component {
                     <button className='ql-indent' value='+1'></button>
                 </span>
 
+                {/* 添加分割线按钮 - 放在链接和图片按钮之前 */}
+                <span className='ql-formats'>
+                    <button className='ql-divider' title='分割线'>
+                        ─
+                    </button>
+                </span>
+
                 {/* 链接和图片 */}
                 <span className='ql-formats'>
                     <button className='ql-link'></button>

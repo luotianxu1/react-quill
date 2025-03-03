@@ -208,3 +208,10 @@
     background-color: #e6f7ff;
     color: #1890ff;
 }
+
+/* 分割线按钮样式 */
+.ql-divider {
+    font-weight: bold !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+}
