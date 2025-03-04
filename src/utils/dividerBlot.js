@@ -10,7 +10,18 @@ class DividerBlot extends BlockEmbed {
         node.style.height = '1px'
         node.style.backgroundColor = '#e8e8e8'
         node.style.margin = '1em 0'
+        // 设置为不可编辑
+        node.contentEditable = false
+        // 防止光标进入
+        node.style.pointerEvents = 'none'
+        // 防止选中
+        node.style.userSelect = 'none'
         return node
+    }
+
+    // 重写 length 方法确保分割线作为一个整体
+    length() {
+        return 1
     }
 }
 
