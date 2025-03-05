@@ -39,39 +39,61 @@ class Editor extends Component {
                             clean: () => {
                                 const range = quill.getSelection()
                                 if (range) {
-                                    console.log(range)
-
-                                    // 获取当前内容
-                                    const contents = quill.getContents(
-                                        range.index,
-                                        range.length
-                                    )
-
-                                    // 创建新的 Delta，保留图片
-                                    const cleanDelta = []
-                                    contents.ops.forEach((op) => {
-                                        if (
-                                            op.insert &&
-                                            typeof op.insert === 'object' &&
-                                            op.insert.image
-                                        ) {
-                                            // 保留图片及其所有属性
-                                            cleanDelta.push(op)
-                                        } else {
-                                            // 清除文本格式
-                                            cleanDelta.push({
-                                                insert: op.insert,
-                                            })
-                                        }
+                                    const formats = [
+                                        'bold',
+                                        'italic',
+                                        'underline',
+                                        'strike',
+                                        'align',
+                                        'header',
+                                        'size',
+                                        'color',
+                                        'background',
+                                        'font',
+                                        'customStyle',
+                                        'lineHeight',
+                                        'indent',
+                                        'list',
+                                    ]
+                                    // 最后清除格式
+                                    formats.forEach((format) => {
+                                        quill.format(format, false)
                                     })
 
-                                    // 使用 updateContents 替换内容
-                                    quill.updateContents(
-                                        [
-                                            { delete: range.length },
-                                            ...cleanDelta,
-                                        ],
-                                        'user'
+                                    // 获取选中范围内的内容
+                                    const [startNode, startOffset] =
+                                        quill.getLine(range.index)
+                                    const [endNode, endOffset] = quill.getLine(
+                                        range.index + range.length
+                                    )
+
+                                    // 遍历所有行
+                                    let currentNode = startNode
+                                    while (currentNode) {
+                                        // 清除当前行的样式
+                                        if (
+                                            currentNode.domNode &&
+                                            currentNode.domNode.style
+                                        ) {
+                                            currentNode.domNode.removeAttribute(
+                                                'style'
+                                            )
+                                        }
+
+                                        // 如果到达结束行，停止遍历
+                                        if (currentNode === endNode) {
+                                            break
+                                        }
+
+                                        // 移动到下一行
+                                        currentNode = currentNode.next
+                                    }
+
+                                    // 重新应用选区
+                                    quill.setSelection(
+                                        range.index,
+                                        range.length,
+                                        'silent'
                                     )
                                 }
                             },
