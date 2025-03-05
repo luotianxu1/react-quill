@@ -215,3 +215,130 @@
     font-size: 18px !important;
     line-height: 1 !important;
 }
+
+/* 颜色选择器容器 */
+.color-picker-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* 颜色按钮 */
+.color-button {
+    width: 28px;
+    height: 28px;
+    padding: 3px;
+    margin: 0 2px;
+    cursor: pointer;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* 颜色网格容器 */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 颜色选项 */
+.color-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px;
+    cursor: pointer;
+}
+
+/* 颜色预览 */
+.color-preview {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+
+.color-item:hover .color-preview {
+    border-color: #4299e1;
+    transform: scale(1.1);
+    transition: all 0.2s;
+}
+
+/* 颜色标签 */
+.color-label {
+    font-size: 14px;
+}
+
+/* 颜色输入框容器 */
+.color-input-container {
+    padding: 6px 8px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* 颜色输入框 */
+.color-input {
+    width: 100%;
+    padding: 4px 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 8px;
+}
+
+.color-input:focus {
+    border-color: #4299e1;
+}
+
+/* 按钮容器 */
+.color-input-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* 按钮样式 */
+.color-input-button {
+    padding: 4px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;
+    user-select: none;
+    text-align: center;
+}
+
+.color-input-button:hover {
+    background: #f5f5f5;
+}
+
+.color-input-button:first-child {
+    background: #1890ff;
+    color: white;
+    border-color: #1890ff;
+}
+
+.color-input-button:first-child:hover {
+    background: #40a9ff;
+}
+
+/* 颜色下拉框 */
+.color-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 156px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}

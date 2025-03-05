@@ -152,7 +152,18 @@ class Editor extends Component {
                         this.props.onChange(content)
                     }
                 })
+
+                // 添加选区变化监听
+                quill.on('selection-change', (range) => {
+                    if (range) {
+                        // 保存当前选区
+                        this.currentRange = range
+                    }
+                })
             })
+
+            // 将 quill 实例暴露给全局，方便调试
+            window.quill = quill
         }
     }
 
@@ -162,6 +173,16 @@ class Editor extends Component {
             // 移除点击事件监听器
             this.quill.root.removeEventListener('click')
         }
+    }
+
+    // 添加获取当前选区的方法
+    getCurrentRange = () => {
+        const { quill } = this.state
+        if (quill) {
+            // 优先使用保存的选区
+            return this.currentRange || quill.getSelection()
+        }
+        return null
     }
 
     render() {

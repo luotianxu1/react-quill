@@ -29,13 +29,56 @@ const LINE_HEIGHTS = [
     { value: '3', label: '3' },
 ]
 
+// 使用 Quill 默认的颜色
+const COLORS = [
+    '#000000',
+    '#e60000',
+    '#ff9900',
+    '#ffff00',
+    '#008a00',
+    '#0066cc',
+    '#9933ff',
+    '#ffffff',
+    '#facccc',
+    '#ffebcc',
+    '#ffffcc',
+    '#cce8cc',
+    '#cce0f5',
+    '#ebd6ff',
+    '#bbbbbb',
+    '#f06666',
+    '#ffc266',
+    '#ffff66',
+    '#66b966',
+    '#66a3e0',
+    '#c285ff',
+    '#888888',
+    '#a10000',
+    '#b26b00',
+    '#b2b200',
+    '#006100',
+    '#0047b2',
+    '#6b24b2',
+    '#444444',
+    '#5c0000',
+    '#663d00',
+    '#666600',
+    '#003700',
+    '#002966',
+    '#3d1466',
+]
+
 class EditorToolbar extends Component {
     constructor(props) {
         super(props)
         this.state = {
             showCustomStyleDropdown: false,
             currentStyle: CUSTOM_STYLES[0],
+            showColorDropdown: false,
+            currentColor: '#000000',
+            customColor: '',
         }
+        this.colorPickerRef = React.createRef()
     }
 
     componentDidMount() {
@@ -65,6 +108,16 @@ class EditorToolbar extends Component {
         const dropdown = document.querySelector('.custom-style-dropdown')
         if (dropdown && !dropdown.contains(event.target)) {
             this.setState({ showCustomStyleDropdown: false })
+        }
+
+        if (
+            this.colorPickerRef.current &&
+            !this.colorPickerRef.current.contains(event.target)
+        ) {
+            this.setState({
+                showColorDropdown: false,
+                customColor: '',
+            })
         }
     }
 
@@ -96,6 +149,66 @@ class EditorToolbar extends Component {
                 }
             }
         }
+    }
+
+    // 添加颜色下拉框处理函数
+    toggleColorDropdown = () => {
+        this.setState((prevState) => ({
+            showColorDropdown: !prevState.showColorDropdown,
+        }))
+    }
+
+    handleColorSelect = (value) => {
+        this.setState({
+            currentColor: value,
+            showColorDropdown: false,
+        })
+
+        const { quill } = this.props
+        if (quill) {
+            const range = quill.getSelection(true)
+            if (range) {
+                quill.format('color', value)
+            }
+        }
+    }
+
+    handleCustomColorSubmit = () => {
+        const color = this.state.customColor
+        // 验证颜色值是否合法
+        if (/^#[0-9A-Fa-f]{6}$/.test(color)) {
+            this.setState({
+                currentColor: color,
+                showColorDropdown: false,
+                customColor: '', // 清空输入框
+            })
+
+            const { quill } = this.props
+            if (quill) {
+                // 先聚焦编辑器
+                quill.focus()
+
+                // 获取选区
+                let range = quill.getSelection()
+                if (!range) {
+                    // 如果没有选区，创建一个新的选区
+                    range = { index: 0, length: 0 }
+                    quill.setSelection(range)
+                }
+
+                // 应用颜色
+                quill.format('color', color)
+            }
+        } else {
+            alert('请输入正确的颜色格式，例如：#FF0000')
+        }
+    }
+
+    handleCustomColorCancel = () => {
+        this.setState({
+            showColorDropdown: false,
+            customColor: '',
+        })
     }
 
     render() {
@@ -176,13 +289,73 @@ class EditorToolbar extends Component {
 
                 {/* 颜色 */}
                 <span className='ql-formats'>
-                    <select className='ql-color'>
-                        <option value='#e60000'>红色</option>
-                        <option value='#008a00'>绿色</option>
-                        <option value='#0066cc'>蓝色</option>
-                        <option value='#9933ff'>紫色</option>
-                        <option value='#000000'>黑色</option>
-                    </select>
+                    <div
+                        className='color-picker-container'
+                        ref={this.colorPickerRef}
+                    >
+                        <button
+                            type='button'
+                            className='color-button'
+                            onClick={this.toggleColorDropdown}
+                            style={{ color: this.state.currentColor }}
+                        >
+                            A
+                        </button>
+                        {this.state.showColorDropdown && (
+                            <div className='color-dropdown'>
+                                <div className='color-grid'>
+                                    {COLORS.map((color) => (
+                                        <div
+                                            key={color}
+                                            className='color-item'
+                                            onClick={() =>
+                                                this.handleColorSelect(color)
+                                            }
+                                        >
+                                            <span
+                                                className='color-preview'
+                                                style={{
+                                                    backgroundColor: color,
+                                                }}
+                                                title={color}
+                                            ></span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className='color-input-container'>
+                                    <input
+                                        type='text'
+                                        className='color-input'
+                                        placeholder='#000000'
+                                        value={this.state.customColor}
+                                        onChange={(e) =>
+                                            this.setState({
+                                                customColor: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    <div className='color-input-buttons'>
+                                        <div
+                                            className='color-input-button'
+                                            onClick={
+                                                this.handleCustomColorSubmit
+                                            }
+                                        >
+                                            确定
+                                        </div>
+                                        <div
+                                            className='color-input-button'
+                                            onClick={
+                                                this.handleCustomColorCancel
+                                            }
+                                        >
+                                            取消
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <select className='ql-background'>
                         <option value='#ffebcc'>浅橙</option>
                         <option value='#cce8cc'>浅绿</option>
