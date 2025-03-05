@@ -11,6 +11,7 @@ import '../../utils/lineHeightBlot'
 import '../../utils/sizeBlot'
 import '../../utils/imageBlot'
 import '../../utils/dividerBlot'
+import '../../utils/alignBlot'
 
 class Editor extends Component {
     constructor(props) {
@@ -109,6 +110,17 @@ class Editor extends Component {
                                     )
                                     // 移动光标到分割线后面
                                     quill.setSelection(range.index + 1, 0)
+                                }
+                            },
+                            align: (value) => {
+                                const range = quill.getSelection()
+                                if (range) {
+                                    if (value) {
+                                        quill.format('align', value)
+                                    } else {
+                                        // 如果没有值，设置为左对齐
+                                        quill.format('align', 'left')
+                                    }
                                 }
                             },
                         },
