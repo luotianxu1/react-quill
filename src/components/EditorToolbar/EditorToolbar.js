@@ -107,6 +107,9 @@ class EditorToolbar extends Component {
                     <button className='ql-italic'></button>
                     <button className='ql-underline'></button>
                     <button className='ql-strike'></button>
+                    {/* 添加上标和下标按钮 */}
+                    <button className='ql-script' value='super'></button>
+                    <button className='ql-script' value='sub'></button>
                 </span>
 
                 {/* 自定义样式 - 改为按钮和下拉框 */}

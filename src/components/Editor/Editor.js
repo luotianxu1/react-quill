@@ -40,6 +40,7 @@ class Editor extends Component {
                             clean: () => {
                                 const range = quill.getSelection()
                                 if (range) {
+                                    // 清除所有格式
                                     const formats = [
                                         'bold',
                                         'italic',
@@ -55,8 +56,12 @@ class Editor extends Component {
                                         'lineHeight',
                                         'indent',
                                         'list',
+                                        'script', // 添加 script 格式来清除上标和下标
+                                        'super', // 添加 super 格式
+                                        'sub', // 添加 sub 格式
                                     ]
-                                    // 最后清除格式
+
+                                    // 清除格式
                                     formats.forEach((format) => {
                                         quill.format(format, false)
                                     })
