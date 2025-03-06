@@ -12,6 +12,7 @@ import '../../utils/sizeBlot'
 import '../../utils/imageBlot'
 import '../../utils/dividerBlot'
 import '../../utils/alignBlot'
+import '../../utils/colorBlot'
 
 class Editor extends Component {
     constructor(props) {
@@ -25,6 +26,20 @@ class Editor extends Component {
 
     componentDidMount() {
         if (this.editorRef.current) {
+            // 获取 Quill 的格式优先级
+            const Inline = Quill.import('blots/inline')
+
+            // 设置格式优先级
+            Inline.order = [
+                'color', // 颜色最先应用
+                'bold', // 然后是加粗
+                'italic',
+                'underline',
+                'strike',
+                'script',
+                'link',
+            ]
+
             const quill = new Quill(this.editorRef.current, {
                 theme: 'snow',
                 modules: {
