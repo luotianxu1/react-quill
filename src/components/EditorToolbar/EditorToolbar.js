@@ -409,6 +409,49 @@ class EditorToolbar extends Component {
                         ))}
                     </select>
                 </span>
+
+                {/* 插入表格按钮 */}
+                <span className='ql-formats'>
+                    <button className='ql-insertTable' title='插入表格'>
+                        <svg viewBox='0 0 18 18'>
+                            <rect
+                                className='ql-stroke'
+                                height='12'
+                                width='12'
+                                x='3'
+                                y='3'
+                            ></rect>
+                            <line
+                                className='ql-stroke'
+                                x1='3'
+                                x2='15'
+                                y1='7'
+                                y2='7'
+                            ></line>
+                            <line
+                                className='ql-stroke'
+                                x1='3'
+                                x2='15'
+                                y1='11'
+                                y2='11'
+                            ></line>
+                            <line
+                                className='ql-stroke'
+                                x1='7'
+                                x2='7'
+                                y1='3'
+                                y2='15'
+                            ></line>
+                            <line
+                                className='ql-stroke'
+                                x1='11'
+                                x2='11'
+                                y1='3'
+                                y2='15'
+                            ></line>
+                        </svg>
+                    </button>
+                </span>
             </div>
         )
     }

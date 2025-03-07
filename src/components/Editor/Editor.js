@@ -14,6 +14,18 @@ import '../../utils/dividerBlot'
 import '../../utils/alignBlot'
 import '../../utils/colorBlot'
 
+// 导入 quill-better-table
+import QuillBetterTable from 'quill-better-table'
+import 'quill-better-table/dist/quill-better-table.css'
+
+// 注册表格模块
+Quill.register(
+    {
+        'modules/better-table': QuillBetterTable,
+    },
+    true
+)
+
 class Editor extends Component {
     constructor(props) {
         super(props)
@@ -142,6 +154,69 @@ class Editor extends Component {
                                         quill.format('align', 'left')
                                     }
                                 }
+                            },
+                            // 添加表格处理器
+                            insertTable: () => {
+                                const tableModule =
+                                    quill.getModule('better-table')
+                                tableModule.insertTable(3, 3)
+                            },
+                            insertTableRow: () => {
+                                const tableModule =
+                                    quill.getModule('better-table')
+                                tableModule.insertRow()
+                            },
+                            insertTableColumn: () => {
+                                const tableModule =
+                                    quill.getModule('better-table')
+                                tableModule.insertColumn()
+                            },
+                            deleteTableRow: () => {
+                                const tableModule =
+                                    quill.getModule('better-table')
+                                tableModule.deleteRow()
+                            },
+                            deleteTableColumn: () => {
+                                const tableModule =
+                                    quill.getModule('better-table')
+                                tableModule.deleteColumn()
+                            },
+                        },
+                    },
+                    'better-table': {
+                        operationMenu: {
+                            items: {
+                                unmergeCells: {
+                                    text: '拆分单元格',
+                                },
+                                mergeCells: {
+                                    text: '合并单元格',
+                                },
+                                insertColumnRight: {
+                                    text: '右侧插入列',
+                                },
+                                insertColumnLeft: {
+                                    text: '左侧插入列',
+                                },
+                                deleteColumn: {
+                                    text: '删除列',
+                                },
+                                insertRowUp: {
+                                    text: '上方插入行',
+                                },
+                                insertRowDown: {
+                                    text: '下方插入行',
+                                },
+                                deleteRow: {
+                                    text: '删除行',
+                                },
+                                deleteTable: {
+                                    text: '删除表格',
+                                },
+                            },
+                            color: {
+                                colors: ['#fff', '#e6e6e6', '#ccc'],
+                                text: '背景颜色',
                             },
                         },
                     },
