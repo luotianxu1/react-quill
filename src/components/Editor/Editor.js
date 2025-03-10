@@ -13,6 +13,7 @@ import '../../utils/imageBlot'
 import '../../utils/dividerBlot'
 import '../../utils/alignBlot'
 import '../../utils/colorBlot'
+import '../../utils/indentBlot'
 
 // 导入 quill-better-table
 import QuillBetterTable from 'quill-better-table'
@@ -83,9 +84,9 @@ class Editor extends Component {
                                         'lineHeight',
                                         'indent',
                                         'list',
-                                        'script', // 添加 script 格式来清除上标和下标
-                                        'super', // 添加 super 格式
-                                        'sub', // 添加 sub 格式
+                                        'script',
+                                        'super',
+                                        'sub',
                                     ]
 
                                     // 清除格式
@@ -103,14 +104,28 @@ class Editor extends Component {
                                     // 遍历所有行
                                     let currentNode = startNode
                                     while (currentNode) {
-                                        // 清除当前行的样式
-                                        if (
-                                            currentNode.domNode &&
-                                            currentNode.domNode.style
-                                        ) {
+                                        // 清除当前行的样式和类
+                                        if (currentNode.domNode) {
+                                            // 清除样式
                                             currentNode.domNode.removeAttribute(
                                                 'style'
                                             )
+
+                                            // 清除所有 ql-indent 类
+                                            const classes = Array.from(
+                                                currentNode.domNode.classList
+                                            )
+                                            classes.forEach((className) => {
+                                                if (
+                                                    className.startsWith(
+                                                        'ql-indent-'
+                                                    )
+                                                ) {
+                                                    currentNode.domNode.classList.remove(
+                                                        className
+                                                    )
+                                                }
+                                            })
                                         }
 
                                         // 如果到达结束行，停止遍历
@@ -180,6 +195,31 @@ class Editor extends Component {
                                 const tableModule =
                                     quill.getModule('better-table')
                                 tableModule.deleteColumn()
+                            },
+                            indent: (value) => {
+                                const range = quill.getSelection()
+                                if (range) {
+                                    // 获取当前缩进值
+                                    const format = quill.getFormat(range)
+                                    const currentIndent = format.indent || 0
+
+                                    if (value === '+1') {
+                                        // 增加缩进
+                                        quill.format(
+                                            'indent',
+                                            currentIndent + 1
+                                        )
+                                    } else if (
+                                        value === '-1' &&
+                                        currentIndent > 0
+                                    ) {
+                                        // 减少缩进
+                                        quill.format(
+                                            'indent',
+                                            currentIndent - 1
+                                        )
+                                    }
+                                }
                             },
                         },
                     },
