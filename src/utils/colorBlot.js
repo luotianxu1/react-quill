@@ -20,12 +20,25 @@ class ColorBlot extends Inline {
             this.unwrap()
         }
     }
+
+    format(name, value) {
+        if (name === 'color') {
+            if (value) {
+                this.domNode.style.color = value
+            } else {
+                this.domNode.style.color = ''
+            }
+        } else {
+            super.format(name, value)
+        }
+    }
 }
 
 ColorBlot.blotName = 'color'
 ColorBlot.tagName = 'span'
+ColorBlot.className = 'ql-color' // 添加类名以便识别
 
 // 注册颜色格式
 Quill.register(ColorBlot)
 
-export default ColorBlot 
+export default ColorBlot

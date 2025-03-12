@@ -14,6 +14,7 @@ import '../../utils/dividerBlot'
 import '../../utils/alignBlot'
 import '../../utils/colorBlot'
 import '../../utils/indentBlot'
+import '../../utils/backgroundBlot'
 
 // 导入 quill-better-table
 import QuillBetterTable from 'quill-better-table'
@@ -44,7 +45,8 @@ class Editor extends Component {
 
             // 设置格式优先级
             Inline.order = [
-                'color', // 颜色最先应用
+                'background', // 背景色优先于颜色
+                'color', // 颜色
                 'bold', // 然后是加粗
                 'italic',
                 'underline',
@@ -110,22 +112,9 @@ class Editor extends Component {
                                             currentNode.domNode.removeAttribute(
                                                 'style'
                                             )
-
-                                            // 清除所有 ql-indent 类
-                                            const classes = Array.from(
-                                                currentNode.domNode.classList
+                                            currentNode.domNode.removeAttribute(
+                                                'class'
                                             )
-                                            classes.forEach((className) => {
-                                                if (
-                                                    className.startsWith(
-                                                        'ql-indent-'
-                                                    )
-                                                ) {
-                                                    currentNode.domNode.classList.remove(
-                                                        className
-                                                    )
-                                                }
-                                            })
                                         }
 
                                         // 如果到达结束行，停止遍历
@@ -288,6 +277,50 @@ class Editor extends Component {
                     if (range) {
                         // 保存当前选区
                         this.currentRange = range
+                    }
+                })
+
+                // 添加 Ctrl+A 监听
+                quill.root.addEventListener('keydown', (e) => {
+                    // 检查是否按下 Ctrl+A (Windows) 或 Command+A (Mac)
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+                        e.preventDefault() // 阻止默认行为
+
+                        // 确保编辑器已经加载完成
+                        setTimeout(() => {
+                            // 获取编辑器内容
+                            const editorContent = quill.root.innerHTML
+                            if (!editorContent) {
+                                console.warn('Editor content is empty')
+                                return
+                            }
+
+                            // 获取编辑器内容的长度
+                            const length = quill.getLength()
+
+                            // 设置选区为整个内容
+                            quill.setSelection(0, length - 1) // 减去最后的换行符
+
+                            // 更新当前选区
+                            this.currentRange = {
+                                index: 0,
+                                length: length - 1,
+                            }
+
+                            // 获取正文内容
+                            const content = {
+                                text: quill.getText(0, length - 1), // 纯文本内容
+                                html: quill.root.innerHTML, // HTML 内容
+                                delta: quill.getContents(0, length - 1), // Delta 格式内容
+                            }
+
+                            console.log('Editor Content:', content)
+
+                            // 如果需要，可以通过回调或其他方式传递内容
+                            if (this.props.onContentSelect) {
+                                this.props.onContentSelect(content)
+                            }
+                        }, 0)
                     }
                 })
             })
